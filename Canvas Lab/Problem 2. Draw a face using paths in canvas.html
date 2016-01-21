@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Problem 2. Draw a face using paths in canvas</title>
+    <style>
+        #can {
+            border: 2px solid black;
+        }
+    </style>
+    <script src="scripts/draw-cylinder.js"></script>
+    <script src="scripts/draw-ellipse.js"></script>
+</head>
+<body>
+<div id ="elem"></div>
+<canvas id = "can" width="800" height="600">ctx.ellipse is only supported on Chrome, Internet Explorer-Edge 13, Opera, and Safari</canvas>
+<script>
+    var canvas = document.getElementById('can');
+    var ctx = canvas.getContext('2d');
+
+    // using custom drawEllipse and drawCylinder functions, the scripts are in separate js files
+    ctx.fillStyle = '#90CAD7';
+    ctx.strokeStyle = '#235661';
+    ctx.lineWidth = '2';
+    ctx.save(); // save fill/stroke styles for future reuse
+    drawEllipse(ctx, 270, 275, 120, 100); // face
+
+    // hat
+    ctx.fillStyle = '#396693';
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = '2';
+    drawEllipse(ctx, 250, 255, 140, 40);
+    drawCylinder(ctx, 300, 200, 60, 80);
+
+    // eyes
+    ctx.restore(); // reset to saved fill/stroke styles
+    drawEllipse(ctx, 280, 305, 26, 18);
+    drawEllipse(ctx, 330, 305, 26, 18);
+
+    // eye pupils
+    ctx.beginPath(); // avoids filling the previously drawn ellipses
+    ctx.ellipse(288, 314, 4, 7, 85, 0, Math.PI*2);
+    ctx.moveTo(338, 315);
+    ctx.ellipse(338, 314, 4, 7, 85, 0, Math.PI*2);
+    ctx.fillStyle = '#235661';
+    ctx.fill();
+
+    // nose
+    ctx.moveTo(315, 315);
+    ctx.lineTo(310, 330);
+    ctx.lineTo(320, 330);
+    ctx.stroke();
+
+    // draw the mouth - using the partially supported ctx.ellipse for the rotation angle
+    ctx.beginPath(); // alternative to ctx.moveTo
+    ctx.ellipse(315, 350, 25, 10, 85, 0, Math.PI*2);
+    ctx.stroke();
+</script>
+</body>
+</html>
